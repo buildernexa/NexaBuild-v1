@@ -6,119 +6,143 @@
 <title>NexaBuild</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700;800&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
 <style>
 /* ===== [CSS] TOKENS ===== */
 :root{
   --bg:#FFFCF4; --surface:#FFFFFF; --ink:#161616;
   --amber:#FFB800; --blue:#2F6FED; --pink:#FF4D8D; --green:#1FAE6B; --violet:#7C5CFF;
-  --border-w:3px; --radius:14px; --shadow-off:4px;
+  --border-w:3px; --radius:16px; --radius-sm:10px;
+  --shadow-off:5px;
   --shadow:var(--shadow-off) var(--shadow-off) 0 var(--ink);
+  --shadow-sm:3px 3px 0 var(--ink);
+  --gutter:16px;
   --font-d:'Space Grotesk',system-ui,sans-serif;
   --font-ar:'Amiri',serif;
 }
 @media (prefers-reduced-motion: reduce){ *{animation-duration:.01ms!important;transition-duration:.01ms!important;} }
 *{box-sizing:border-box;}
 html,body{margin:0;height:100%;}
-body{background:var(--bg);color:var(--ink);font-family:var(--font-d);-webkit-tap-highlight-color:transparent;overflow-x:hidden;}
+body{
+  background-color:var(--bg);
+  background-image:radial-gradient(rgba(22,22,22,.08) 1.6px, transparent 1.6px);
+  background-size:20px 20px;
+  color:var(--ink);font-family:var(--font-d);font-size:15px;
+  -webkit-tap-highlight-color:transparent;overflow-x:hidden;
+}
 .hidden{display:none!important;}
 .neo-card{background:var(--surface);border:var(--border-w) solid var(--ink);border-radius:var(--radius);box-shadow:var(--shadow);}
-.btn-neo{font-family:var(--font-d);font-weight:700;border:var(--border-w) solid var(--ink);border-radius:10px;background:var(--amber);box-shadow:var(--shadow);padding:10px 16px;cursor:pointer;transition:transform .08s,box-shadow .08s;}
-.btn-neo:active{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--ink);}
+.tag{display:inline-block;font-size:10px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;padding:3px 9px;border:2px solid var(--ink);border-radius:999px;margin-bottom:8px;}
+.btn-neo{font-family:var(--font-d);font-weight:700;border:var(--border-w) solid var(--ink);border-radius:var(--radius-sm);background:var(--amber);box-shadow:var(--shadow-sm);padding:12px 16px;cursor:pointer;transition:transform .08s,box-shadow .08s;}
+.btn-neo:active{transform:translate(3px,3px);box-shadow:0 0 0 var(--ink);}
 .dot{width:9px;height:9px;border-radius:50%;display:inline-block;}
-.dot-green{background:var(--green);}
+.dot-green{background:var(--green);box-shadow:0 0 6px var(--green);}
 
 /* ===== [CSS] AUTH SCREEN ===== */
-#screen-auth{position:fixed;inset:0;background:var(--ink);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;z-index:50;}
-#screen-auth h2{font-size:18px;letter-spacing:.5px;}
-#fp-wrap{position:relative;width:170px;height:170px;}
+#screen-auth{
+  position:fixed;inset:0;background:#0d0d0d;
+  background-image:radial-gradient(rgba(255,255,255,.08) 1.6px, transparent 1.6px);
+  background-size:22px 22px;
+  color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;z-index:50;
+  touch-action:none;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;
+}
+#screen-auth h2{font-size:22px;font-weight:800;letter-spacing:.5px;margin:0;}
+#fp-wrap{position:relative;width:180px;height:180px;filter:drop-shadow(0 0 14px rgba(31,174,107,.45));}
 #fp-svg{width:100%;height:100%;}
 .fp-line{stroke:#fff;}
-#fp-ring-bg{stroke:rgba(255,255,255,.2);}
-#fp-ring{stroke:var(--green);transition:none;}
-#fp-scanline{position:absolute;left:10%;width:80%;height:3px;background:var(--green);opacity:.8;border-radius:2px;animation:scan 1.6s linear infinite;}
-@keyframes scan{0%{top:15%;}50%{top:80%;}100%{top:15%;}}
-#fp-percent{font-size:14px;color:var(--green);font-weight:700;}
+#fp-ring-bg{stroke:rgba(255,255,255,.18);}
+#fp-ring{stroke:var(--green);}
+#fp-scanline{position:absolute;left:12%;width:76%;height:3px;background:var(--green);opacity:.9;border-radius:2px;box-shadow:0 0 10px var(--green);animation:scan 1.6s linear infinite;}
+@keyframes scan{0%{top:18%;}50%{top:78%;}100%{top:18%;}}
+#fp-percent{font-size:15px;color:var(--green);font-weight:800;letter-spacing:.3px;}
 #screen-auth.success #fp-wrap{animation:pulseok .4s ease;}
-@keyframes pulseok{0%{transform:scale(1);}50%{transform:scale(1.12);}100%{transform:scale(1);}}
-#fp-hint{font-size:13px;opacity:.7;}
+@keyframes pulseok{0%{transform:scale(1);}50%{transform:scale(1.14);}100%{transform:scale(1);}}
+#fp-hint{font-size:13px;opacity:.6;}
 
 /* ===== [CSS] DASHBOARD SHELL ===== */
-#app{display:none;flex-direction:column;min-height:100%;padding-bottom:70px;}
+#app{display:none;flex-direction:column;min-height:100%;padding-bottom:76px;}
 #app.active{display:flex;}
-.topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:var(--violet);border-bottom:var(--border-w) solid var(--ink);position:sticky;top:0;z-index:20;}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:14px var(--gutter);background:var(--violet);border-bottom:var(--border-w) solid var(--ink);position:sticky;top:0;z-index:20;}
 #hamburger{display:flex;flex-direction:column;gap:5px;width:28px;cursor:pointer;background:none;border:none;padding:0;}
 #hamburger span{height:4px;background:var(--ink);border-radius:2px;}
 #hamburger span:nth-child(1){width:100%;}
 #hamburger span:nth-child(2){width:55%;}
 #hamburger span:nth-child(3){width:100%;}
-.brand{font-weight:700;font-size:19px;}
-#cube-btn{background:var(--amber);border:var(--border-w) solid var(--ink);border-radius:8px;width:38px;height:38px;display:flex;align-items:center;justify-content:center;}
+.brand-wrap{display:flex;align-items:center;gap:8px;}
+.brand-logo{width:26px;height:26px;background:var(--amber);border:2px solid var(--ink);border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;}
+.brand{font-weight:800;font-size:19px;}
+#cube-btn{background:var(--amber);border:var(--border-w) solid var(--ink);border-radius:var(--radius-sm);width:40px;height:40px;display:flex;align-items:center;justify-content:center;transition:transform .08s;}
+#cube-btn:active{transform:translate(2px,2px);}
 
 /* side drawer */
-#drawer{position:fixed;top:0;left:-260px;width:240px;height:100%;background:var(--surface);border-right:var(--border-w) solid var(--ink);z-index:40;transition:left .25s;padding:20px 14px;}
+#drawer{position:fixed;top:0;left:-260px;width:240px;height:100%;background:var(--surface);border-right:var(--border-w) solid var(--ink);z-index:40;transition:left .25s;padding:22px 14px;}
 #drawer.open{left:0;}
-#drawer button{display:block;width:100%;text-align:left;background:none;border:none;font-family:var(--font-d);font-weight:700;padding:12px 6px;border-bottom:2px solid var(--ink);}
-#drawer-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:39;display:none;}
+#drawer button{display:block;width:100%;text-align:left;background:none;border:none;font-family:var(--font-d);font-weight:700;padding:13px 6px;border-bottom:2px solid var(--ink);}
+#drawer-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:39;display:none;}
 #drawer-backdrop.show{display:block;}
 
 /* ticker */
 .ticker-wrap{overflow:hidden;border-bottom:var(--border-w) solid var(--ink);white-space:nowrap;}
-.ticker-track{display:inline-flex;animation:ticker 18s linear infinite;}
+.ticker-track{display:inline-flex;animation:ticker 20s linear infinite;}
 @keyframes ticker{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
-.ticker-item{padding:8px 18px;font-weight:700;font-size:13px;border-right:2px solid var(--ink);}
+.ticker-item{padding:9px 18px;font-weight:700;font-size:13px;border-right:2px solid var(--ink);}
 
 /* video */
 .video-wrap{position:relative;background:#000;aspect-ratio:16/9;border-bottom:var(--border-w) solid var(--ink);}
 .video-wrap video{width:100%;height:100%;object-fit:cover;display:block;}
-#mute-btn{position:absolute;bottom:10px;right:10px;background:var(--surface);border:var(--border-w) solid var(--ink);border-radius:8px;width:36px;height:36px;font-size:16px;}
+.live-chip{position:absolute;top:10px;left:10px;background:var(--pink);color:#fff;font-weight:800;font-size:10px;letter-spacing:.5px;padding:4px 10px;border:2px solid var(--ink);border-radius:999px;}
+#mute-btn{position:absolute;bottom:10px;right:10px;background:var(--surface);border:var(--border-w) solid var(--ink);border-radius:var(--radius-sm);width:38px;height:38px;font-size:16px;}
 
 /* sections generic */
 .section-pad{padding:14px;}
-.section-pad h3{margin:0 0 10px;font-size:15px;}
+.section-pad h3{margin:0;font-size:16px;font-weight:800;}
 
 /* account card */
-.acc-head{display:flex;align-items:center;gap:10px;padding:14px;}
-.avatar{width:46px;height:46px;border-radius:50%;background:var(--pink);border:var(--border-w) solid var(--ink);display:flex;align-items:center;justify-content:center;font-weight:700;}
-.acc-head .meta{flex:1;}
-.acc-head .meta small{display:block;opacity:.6;}
-.weather-chip{background:var(--blue);color:#fff;border:var(--border-w) solid var(--ink);border-radius:999px;padding:4px 10px;font-size:12px;font-weight:700;}
-.acc-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 14px 14px;}
-.acc-mini{padding:10px;}
-.acc-mini .label{font-size:11px;font-weight:700;opacity:.6;}
-.acc-mini .value{font-weight:700;margin-top:2px;}
-.stat-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;padding:0 14px 14px;}
-.stat-pill{text-align:center;padding:12px 6px;}
-.stat-pill .num{font-size:20px;font-weight:700;}
-.stat-pill .label{font-size:10px;font-weight:700;opacity:.6;margin-top:2px;}
+.acc-head{display:flex;align-items:center;gap:12px;padding:16px 14px 10px;}
+.avatar{width:48px;height:48px;border-radius:50%;background:var(--pink);border:var(--border-w) solid var(--ink);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px;color:#fff;flex-shrink:0;}
+.acc-head .meta{flex:1;min-width:0;}
+.acc-head .meta strong{font-size:16px;}
+.acc-head .meta small{display:block;opacity:.6;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.weather-chip{background:var(--blue);color:#fff;border:var(--border-w) solid var(--ink);border-radius:999px;padding:5px 11px;font-size:12px;font-weight:800;white-space:nowrap;}
+.acc-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:4px 14px 14px;}
+.acc-mini{padding:11px;}
+.acc-mini .label{font-size:10px;font-weight:800;opacity:.55;letter-spacing:.4px;}
+.acc-mini .value{font-weight:700;margin-top:3px;font-size:13px;}
+.stat-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;padding:0 14px 16px;}
+.stat-pill{text-align:center;padding:13px 6px;}
+.stat-pill .num{font-size:21px;font-weight:800;}
+.stat-pill .label{font-size:10px;font-weight:700;opacity:.6;margin-top:3px;}
 
 /* cpu gauge */
-.gauge-wrap{padding:14px;}
-.gauge-bar{height:16px;border:var(--border-w) solid var(--ink);border-radius:8px;overflow:hidden;background:#eee;}
-.gauge-fill{height:100%;background:var(--green);width:0%;transition:width .5s;}
-.gauge-info{display:flex;justify-content:space-between;font-size:12px;margin-top:6px;font-weight:700;}
+.gauge-wrap{padding:16px;}
+.gauge-bar{height:18px;border:var(--border-w) solid var(--ink);border-radius:999px;overflow:hidden;background:#eee;}
+.gauge-fill{height:100%;width:0%;transition:width .5s;background:linear-gradient(90deg,var(--green),var(--amber));}
+.gauge-info{display:flex;justify-content:space-between;font-size:12px;margin-top:7px;font-weight:700;}
 
 /* quran */
-.quran-controls{display:flex;gap:8px;padding:14px;flex-wrap:wrap;}
-.quran-controls select{flex:1;min-width:120px;padding:10px;border:var(--border-w) solid var(--ink);border-radius:10px;font-family:var(--font-d);font-weight:700;background:var(--surface);}
-.ayat-box{margin:0 14px 14px;padding:14px;}
-.ayat-arab{font-family:var(--font-ar);font-size:26px;text-align:right;line-height:2;margin-bottom:8px;}
-.ayat-id{font-size:13px;opacity:.85;}
-.ayat-item{border-bottom:2px dashed var(--ink);padding:10px 0;}
+.quran-controls{padding:14px;}
+.quran-controls select{width:100%;padding:12px;border:var(--border-w) solid var(--ink);border-radius:var(--radius-sm);font-family:var(--font-d);font-weight:700;background:var(--surface);box-shadow:var(--shadow-sm);}
+.ayat-box{margin:0 14px 14px;padding:4px 14px;}
+.ayat-arab{font-family:var(--font-ar);font-size:27px;text-align:right;line-height:2.1;margin-bottom:6px;}
+.ayat-id{font-size:13px;opacity:.85;line-height:1.5;}
+.ayat-item{display:flex;gap:10px;align-items:flex-start;border-bottom:2px dashed var(--ink);padding:14px 0;}
+.ayat-num{flex-shrink:0;width:24px;height:24px;border-radius:50%;border:2px solid var(--ink);background:var(--green);color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;margin-top:3px;}
+.ayat-body{flex:1;min-width:0;}
 
 /* build section */
 .build-row{display:flex;flex-direction:column;gap:10px;padding:14px;}
-.build-row input{padding:10px;border:var(--border-w) solid var(--ink);border-radius:10px;font-family:var(--font-d);}
+.build-row input{padding:12px;border:var(--border-w) solid var(--ink);border-radius:var(--radius-sm);font-family:var(--font-d);}
 .steps{display:flex;gap:8px;padding:0 14px 14px;}
-.step{flex:1;text-align:center;padding:8px 4px;border:var(--border-w) solid var(--ink);border-radius:10px;font-size:11px;font-weight:700;background:#eee;}
+.step{flex:1;text-align:center;padding:9px 4px;border:var(--border-w) solid var(--ink);border-radius:var(--radius-sm);font-size:11px;font-weight:800;background:#eee;}
 .step.active{background:var(--amber);}
 .step.done{background:var(--green);color:#fff;}
-#build-log{margin:0 14px 14px;padding:10px;font-size:12px;white-space:pre-wrap;max-height:160px;overflow-y:auto;}
+#build-log{margin:0 14px 14px;padding:12px;font-size:12px;white-space:pre-wrap;max-height:170px;overflow-y:auto;background:#111;color:#4ade80;border-color:var(--ink);font-family:monospace;}
 
 /* bottom nav */
-#bottomnav{position:fixed;bottom:0;left:0;right:0;display:flex;background:var(--surface);border-top:var(--border-w) solid var(--ink);z-index:20;}
-#bottomnav button{flex:1;background:none;border:none;padding:10px 4px;font-family:var(--font-d);font-weight:700;font-size:11px;opacity:.5;}
+#bottomnav{position:fixed;bottom:0;left:0;right:0;display:flex;background:var(--surface);border-top:var(--border-w) solid var(--ink);z-index:20;padding-bottom:env(safe-area-inset-bottom,0px);}
+#bottomnav button{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;padding:10px 4px 8px;font-family:var(--font-d);font-weight:700;font-size:10.5px;color:var(--ink);opacity:.45;}
 #bottomnav button.active{opacity:1;color:var(--violet);}
+#bottomnav svg{width:21px;height:21px;}
 </style>
 </head>
 <body>
@@ -156,7 +180,10 @@ body{background:var(--bg);color:var(--ink);font-family:var(--font-d);-webkit-tap
 <div id="app">
   <div class="topbar">
     <button id="hamburger"><span></span><span></span><span></span></button>
-    <div class="brand">NexaBuild</div>
+    <div class="brand-wrap">
+      <div class="brand-logo">N</div>
+      <div class="brand">NexaBuild</div>
+    </div>
     <button id="cube-btn" data-nav="build">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#161616" stroke-width="2"><path d="M12 2 2 7l10 5 10-5-10-5Z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
     </button>
@@ -168,6 +195,7 @@ body{background:var(--bg);color:var(--ink);font-family:var(--font-d);-webkit-tap
 
   <div class="video-wrap">
     <video id="main-video" src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.webm" loop playsinline></video>
+    <div class="live-chip">● LIVE</div>
     <button id="mute-btn">🔊</button>
   </div>
 
@@ -175,7 +203,7 @@ body{background:var(--bg);color:var(--ink);font-family:var(--font-d);-webkit-tap
   <div class="app-section" id="section-home">
     <div class="neo-card" style="margin:14px;">
       <div class="acc-head">
-        <div class="avatar">👤</div>
+        <div class="avatar" id="acc-avatar">H</div>
         <div class="meta">
           <strong>Hey There</strong>
           <small id="acc-email">icatishere@gmail.com</small>
@@ -201,7 +229,8 @@ body{background:var(--bg);color:var(--ink);font-family:var(--font-d);-webkit-tap
 
     <div class="neo-card" style="margin:0 14px 14px;">
       <div class="gauge-wrap">
-        <div class="gauge-info"><span>CPU / Sistem</span><span id="cpu-cores">- core</span></div>
+        <span class="tag" style="background:var(--violet);color:#fff;">SISTEM</span>
+        <div class="gauge-info"><span>CPU</span><span id="cpu-cores">- core</span></div>
         <div class="gauge-bar"><div class="gauge-fill" id="cpu-fill"></div></div>
         <div class="gauge-info"><span id="cpu-label">Estimasi beban</span><span id="cpu-pct">0%</span></div>
       </div>
@@ -211,14 +240,14 @@ body{background:var(--bg);color:var(--ink);font-family:var(--font-d);-webkit-tap
   <!-- BUILD SECTION -->
   <div class="app-section hidden" id="section-build">
     <div class="neo-card" style="margin:14px;">
-      <div class="section-pad"><h3>Koneksi GitHub (sementara)</h3></div>
+      <div class="section-pad"><span class="tag" style="background:var(--blue);color:#fff;">KONEKSI</span><h3>GitHub (sementara)</h3></div>
       <div class="build-row">
         <input id="gh-token" type="password" placeholder="Personal Access Token (repo, workflow)">
         <input id="gh-owner" type="text" placeholder="Username / organisasi">
         <input id="gh-repo" type="text" placeholder="Nama repo">
         <div style="display:flex;gap:8px;">
           <button class="btn-neo" id="gh-save">Simpan</button>
-          <button class="btn-neo" id="gh-clear" style="background:var(--pink);">Putuskan sambungan</button>
+          <button class="btn-neo" id="gh-clear" style="background:var(--pink);color:#fff;">Putuskan sambungan</button>
         </div>
         <small id="gh-status" style="font-weight:700;"></small>
         <small style="opacity:.7;">⚠️ Token hanya tersimpan di HP ini (localStorage), tidak dikirim ke server lain. Jangan pernah taruh token di dalam kode / commit ke repo publik.</small>
@@ -226,7 +255,7 @@ body{background:var(--bg);color:var(--ink);font-family:var(--font-d);-webkit-tap
     </div>
 
     <div class="neo-card" style="margin:0 14px 14px;">
-      <div class="section-pad"><h3>Test Build APK</h3></div>
+      <div class="section-pad"><span class="tag" style="background:var(--amber);">BUILD</span><h3>Test Build APK</h3></div>
       <div class="steps">
         <div class="step" id="step-queued">Queued</div>
         <div class="step" id="step-running">Running</div>
@@ -242,7 +271,7 @@ body{background:var(--bg);color:var(--ink);font-family:var(--font-d);-webkit-tap
   <!-- QURAN SECTION -->
   <div class="app-section hidden" id="section-quran">
     <div class="neo-card" style="margin:14px;">
-      <div class="section-pad"><h3>Modul Al-Qur'an</h3></div>
+      <div class="section-pad"><span class="tag" style="background:var(--green);color:#fff;">QUR'AN</span><h3>Modul Al-Qur'an</h3></div>
       <div class="quran-controls">
         <select id="surah-select"><option>Memuat daftar surah...</option></select>
       </div>
@@ -251,10 +280,22 @@ body{background:var(--bg);color:var(--ink);font-family:var(--font-d);-webkit-tap
   </div>
 
   <div id="bottomnav">
-    <button class="active" data-nav="home">Home</button>
-    <button data-nav="build">Build</button>
-    <button data-nav="quran">Modul</button>
-    <button disabled style="opacity:.3">Lainnya</button>
+    <button class="active" data-nav="home">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+      Home
+    </button>
+    <button data-nav="build">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 7l10 5 10-5-10-5Z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+      Build
+    </button>
+    <button data-nav="quran">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V4H6.5A2.5 2.5 0 0 0 4 6.5v13Z"/><path d="M4 19.5V6.5"/></svg>
+      Modul
+    </button>
+    <button disabled style="opacity:.25">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"/></svg>
+      Lainnya
+    </button>
   </div>
 </div>
 
@@ -267,36 +308,36 @@ function showSection(name){
   document.getElementById('drawer').classList.remove('open');
   document.getElementById('drawer-backdrop').classList.remove('show');
 }
-document.querySelectorAll('[data-nav]').forEach(el=>{
-  el.addEventListener('click', ()=> showSection(el.dataset.nav));
+document.querySelectorAll('[data-nav]').forEach(function(el){
+  el.addEventListener('click', function(){ showSection(el.dataset.nav); });
 });
-document.getElementById('hamburger').addEventListener('click', ()=>{
+document.getElementById('hamburger').addEventListener('click', function(){
   document.getElementById('drawer').classList.toggle('open');
   document.getElementById('drawer-backdrop').classList.toggle('show');
 });
-document.getElementById('drawer-backdrop').addEventListener('click', ()=>{
+document.getElementById('drawer-backdrop').addEventListener('click', function(){
   document.getElementById('drawer').classList.remove('open');
   document.getElementById('drawer-backdrop').classList.remove('show');
 });
 
 /* ===== [JS] TICKER ===== */
-const tickerItems = [
-  {text:'🚀 NexaBuild siap memicu build APK', bg:'var(--amber)'},
-  {text:'🔒 Token tersimpan aman di HP kamu', bg:'var(--blue)'},
-  {text:'📖 Modul Al-Qur\\'an terhubung ke API', bg:'var(--pink)'},
-  {text:'⚙️ GitHub Actions: gratis & otomatis', bg:'var(--green)'},
+var tickerItems = [
+  {text:"🚀 NexaBuild siap memicu build APK", bg:"var(--amber)"},
+  {text:"🔒 Token tersimpan aman di HP kamu", bg:"var(--blue)"},
+  {text:"📖 Modul Al-Qur'an terhubung ke API", bg:"var(--pink)"},
+  {text:"⚙️ GitHub Actions: gratis & otomatis", bg:"var(--green)"}
 ];
-const track = document.getElementById('ticker-track');
+var track = document.getElementById('ticker-track');
 function renderTicker(){
-  const html = tickerItems.map(i=>`<div class="ticker-item" style="background:${i.bg}">${i.text}</div>`).join('');
-  track.innerHTML = html + html; // duplikat untuk loop mulus
+  var html = tickerItems.map(function(i){ return '<div class="ticker-item" style="background:'+i.bg+'">'+i.text+'</div>'; }).join('');
+  track.innerHTML = html + html;
 }
 renderTicker();
 
 /* ===== [JS] CPU GAUGE (estimasi) ===== */
-document.getElementById('cpu-cores').textContent = (navigator.hardwareConcurrency||'?') + ' core';
+document.getElementById('cpu-cores').textContent = (navigator.hardwareConcurrency || '?') + ' core';
 function updateCpuGauge(){
-  const pct = Math.round(15 + Math.random()*40);
+  var pct = Math.round(15 + Math.random()*40);
   document.getElementById('cpu-fill').style.width = pct+'%';
   document.getElementById('cpu-pct').textContent = pct+'%';
 }
@@ -304,33 +345,33 @@ updateCpuGauge();
 setInterval(updateCpuGauge, 3000);
 
 /* ===== [JS] MUTE BUTTON ===== */
-const video = document.getElementById('main-video');
-const muteBtn = document.getElementById('mute-btn');
-muteBtn.addEventListener('click', ()=>{
+var video = document.getElementById('main-video');
+var muteBtn = document.getElementById('mute-btn');
+muteBtn.addEventListener('click', function(){
   video.muted = !video.muted;
   muteBtn.textContent = video.muted ? '🔇' : '🔊';
 });
 
-/* ===== [JS] FINGERPRINT AUTH ===== */
-const fpLines = document.querySelectorAll('.fp-line');
-const lineLens = Array.from(fpLines).map(p=>p.getTotalLength());
-fpLines.forEach((p,i)=>{ p.style.strokeDasharray=lineLens[i]; p.style.strokeDashoffset=lineLens[i]; });
-const ring = document.getElementById('fp-ring');
-const RING_C = 2*Math.PI*90;
+/* ===== [JS] FINGERPRINT AUTH (diperkuat: pointer + touch + mouse fallback) ===== */
+var fpLines = document.querySelectorAll('.fp-line');
+var lineLens = Array.prototype.map.call(fpLines, function(p){ return p.getTotalLength(); });
+fpLines.forEach(function(p,i){ p.style.strokeDasharray = lineLens[i]; p.style.strokeDashoffset = lineLens[i]; });
+var ring = document.getElementById('fp-ring');
+var RING_C = 2*Math.PI*90;
 ring.style.strokeDasharray = RING_C;
 ring.style.strokeDashoffset = RING_C;
-const percentEl = document.getElementById('fp-percent');
-const authScreen = document.getElementById('screen-auth');
-const HOLD_MS = 1400;
-let holdStart=null, rafId=null, done=false;
+var percentEl = document.getElementById('fp-percent');
+var authScreen = document.getElementById('screen-auth');
+var HOLD_MS = 1400;
+var holdStart = null, rafId = null, done = false;
 
-function vibrate(pattern){ try{ navigator.vibrate && navigator.vibrate(pattern); }catch(e){} }
+function vibrate(pattern){ try{ if(navigator.vibrate) navigator.vibrate(pattern); }catch(e){} }
 
 function tick(now){
-  const elapsed = now - holdStart;
-  const progress = Math.min(elapsed/HOLD_MS, 1);
+  var elapsed = now - holdStart;
+  var progress = Math.min(elapsed/HOLD_MS, 1);
   ring.style.strokeDashoffset = RING_C*(1-progress);
-  fpLines.forEach((p,i)=> p.style.strokeDashoffset = lineLens[i]*(1-progress));
+  fpLines.forEach(function(p,i){ p.style.strokeDashoffset = lineLens[i]*(1-progress); });
   percentEl.textContent = Math.round(progress*100)+'%';
   if(progress < 1){
     rafId = requestAnimationFrame(tick);
@@ -339,55 +380,64 @@ function tick(now){
     onAuthSuccess();
   }
 }
-function startHold(){
-  if(done) return;
+function startHold(e){
+  if(done || holdStart !== null) return;
+  if(e && e.cancelable) e.preventDefault();
+  if(e && e.pointerId !== undefined && authScreen.setPointerCapture){
+    try{ authScreen.setPointerCapture(e.pointerId); }catch(err){}
+  }
   holdStart = performance.now();
   vibrate(10);
   rafId = requestAnimationFrame(tick);
 }
 function cancelHold(){
   if(done) return;
+  holdStart = null;
   cancelAnimationFrame(rafId);
   ring.style.strokeDashoffset = RING_C;
-  fpLines.forEach((p,i)=> p.style.strokeDashoffset = lineLens[i]);
+  fpLines.forEach(function(p,i){ p.style.strokeDashoffset = lineLens[i]; });
   percentEl.textContent = 'Tahan untuk mulai';
 }
 function onAuthSuccess(){
   vibrate([30,30,80]);
   authScreen.classList.add('success');
   percentEl.textContent = 'Berhasil ✓';
-  setTimeout(()=>{
-    authScreen.style.display='none';
+  setTimeout(function(){
+    authScreen.style.display = 'none';
     document.getElementById('app').classList.add('active');
-    // user activation masih berlaku di titik ini -> aman nyalakan suara
     video.muted = false;
-    video.play().catch(()=>{ video.muted = true; video.play(); muteBtn.textContent='🔇'; });
+    video.play().catch(function(){ video.muted = true; video.play(); muteBtn.textContent='🔇'; });
   }, 350);
 }
 authScreen.addEventListener('pointerdown', startHold);
 authScreen.addEventListener('pointerup', cancelHold);
-authScreen.addEventListener('pointerleave', cancelHold);
+authScreen.addEventListener('pointercancel', cancelHold);
+authScreen.addEventListener('touchstart', startHold, {passive:false});
+authScreen.addEventListener('touchend', cancelHold);
+authScreen.addEventListener('touchcancel', cancelHold);
+authScreen.addEventListener('mousedown', startHold);
+authScreen.addEventListener('mouseup', cancelHold);
 
 /* ===== [JS] GITHUB CONNECT (sementara, Tahap 1) ===== */
-const ghStatus = document.getElementById('gh-status');
+var ghStatus = document.getElementById('gh-status');
 function ghCreds(){
   return {
-    token: localStorage.getItem('nb_token')||'',
-    owner: localStorage.getItem('nb_owner')||'',
-    repo: localStorage.getItem('nb_repo')||''
+    token: localStorage.getItem('nb_token') || '',
+    owner: localStorage.getItem('nb_owner') || '',
+    repo: localStorage.getItem('nb_repo') || ''
   };
 }
 function refreshGhStatus(){
-  const c = ghCreds();
-  ghStatus.textContent = c.token ? `Terhubung: ${c.owner}/${c.repo}` : 'Belum terhubung ke GitHub';
+  var c = ghCreds();
+  ghStatus.textContent = c.token ? ('Terhubung: '+c.owner+'/'+c.repo) : 'Belum terhubung ke GitHub';
 }
-document.getElementById('gh-save').addEventListener('click', ()=>{
+document.getElementById('gh-save').addEventListener('click', function(){
   localStorage.setItem('nb_token', document.getElementById('gh-token').value.trim());
   localStorage.setItem('nb_owner', document.getElementById('gh-owner').value.trim());
   localStorage.setItem('nb_repo', document.getElementById('gh-repo').value.trim());
   refreshGhStatus();
 });
-document.getElementById('gh-clear').addEventListener('click', ()=>{
+document.getElementById('gh-clear').addEventListener('click', function(){
   localStorage.removeItem('nb_token'); localStorage.removeItem('nb_owner'); localStorage.removeItem('nb_repo');
   document.getElementById('gh-token').value=''; document.getElementById('gh-owner').value=''; document.getElementById('gh-repo').value='';
   refreshGhStatus();
@@ -395,60 +445,54 @@ document.getElementById('gh-clear').addEventListener('click', ()=>{
 refreshGhStatus();
 
 /* ===== [JS] BUILD TRIGGER + POLLING ===== */
-const buildLog = document.getElementById('build-log');
-function logLine(t){ buildLog.textContent += '\\n'+t; buildLog.scrollTop = buildLog.scrollHeight; }
+var buildLog = document.getElementById('build-log');
+function logLine(t){ buildLog.textContent += '\n'+t; buildLog.scrollTop = buildLog.scrollHeight; }
 function setStep(name){
-  ['queued','running','done'].forEach(s=>{
-    const el = document.getElementById('step-'+s);
-    el.classList.remove('active','done');
+  ['queued','running','done'].forEach(function(s){
+    document.getElementById('step-'+s).classList.remove('active','done');
   });
   if(name==='queued') document.getElementById('step-queued').classList.add('active');
   if(name==='running'){ document.getElementById('step-queued').classList.add('done'); document.getElementById('step-running').classList.add('active'); }
   if(name==='done'){ document.getElementById('step-queued').classList.add('done'); document.getElementById('step-running').classList.add('done'); document.getElementById('step-done').classList.add('done'); }
 }
 
-document.getElementById('run-build').addEventListener('click', async ()=>{
-  const c = ghCreds();
+document.getElementById('run-build').addEventListener('click', function(){
+  var c = ghCreds();
   if(!c.token || !c.owner || !c.repo){
     buildLog.textContent = 'Belum terhubung. Isi token + owner + repo dulu di atas.';
     return;
   }
   buildLog.textContent = 'Memicu workflow build-apk.yml...';
   setStep('queued');
-  try{
-    const dispatchRes = await fetch(`https://api.github.com/repos/${c.owner}/${c.repo}/actions/workflows/build-apk.yml/dispatches`, {
-      method:'POST',
-      headers:{
-        'Authorization':'Bearer '+c.token,
-        'Accept':'application/vnd.github+json',
-        'Content-Type':'application/json'
-      },
-      body: JSON.stringify({ ref:'main' })
-    });
-    if(!dispatchRes.ok){
-      logLine('Gagal memicu build. Status: '+dispatchRes.status+' '+(await dispatchRes.text()));
-      return;
+  fetch('https://api.github.com/repos/'+c.owner+'/'+c.repo+'/actions/workflows/build-apk.yml/dispatches', {
+    method:'POST',
+    headers:{
+      'Authorization':'Bearer '+c.token,
+      'Accept':'application/vnd.github+json',
+      'Content-Type':'application/json'
+    },
+    body: JSON.stringify({ ref:'main' })
+  }).then(function(res){
+    if(!res.ok){
+      return res.text().then(function(t){ logLine('Gagal memicu build. Status: '+res.status+' '+t); });
     }
     logLine('Workflow dipicu. Menunggu run muncul...');
-    await new Promise(r=>setTimeout(r, 4000));
-    pollRun(c);
-  }catch(err){
+    setTimeout(function(){ pollRun(c); }, 4000);
+  }).catch(function(err){
     logLine('Error jaringan: '+err.message);
-  }
+  });
 });
 
-async function pollRun(c){
-  try{
-    const res = await fetch(`https://api.github.com/repos/${c.owner}/${c.repo}/actions/workflows/build-apk.yml/runs?per_page=1`, {
-      headers:{ 'Authorization':'Bearer '+c.token, 'Accept':'application/vnd.github+json' }
-    });
-    const data = await res.json();
-    const run = data.workflow_runs && data.workflow_runs[0];
-    if(!run){ logLine('Run belum ditemukan, coba lagi...'); setTimeout(()=>pollRun(c), 4000); return; }
-    logLine(`Status: ${run.status}${run.conclusion ? ' / '+run.conclusion : ''}`);
+function pollRun(c){
+  fetch('https://api.github.com/repos/'+c.owner+'/'+c.repo+'/actions/workflows/build-apk.yml/runs?per_page=1', {
+    headers:{ 'Authorization':'Bearer '+c.token, 'Accept':'application/vnd.github+json' }
+  }).then(function(res){ return res.json(); }).then(function(data){
+    var run = data.workflow_runs && data.workflow_runs[0];
+    if(!run){ logLine('Run belum ditemukan, coba lagi...'); setTimeout(function(){ pollRun(c); }, 4000); return; }
+    logLine('Status: '+run.status+(run.conclusion ? ' / '+run.conclusion : ''));
     if(run.status !== 'completed'){
       setStep('running');
-      setTimeout(()=>pollRun(c), 5000);
+      setTimeout(function(){ pollRun(c); }, 5000);
       return;
     }
     setStep('done');
@@ -458,43 +502,36 @@ async function pollRun(c){
     } else {
       logLine('❌ Build gagal. Cek log lengkap di: '+run.html_url);
     }
-  }catch(err){
+  }).catch(function(err){
     logLine('Error polling: '+err.message);
-    setTimeout(()=>pollRun(c), 5000);
-  }
+    setTimeout(function(){ pollRun(c); }, 5000);
+  });
 }
 
 /* ===== [JS] MODUL AL-QUR'AN ===== */
-async function loadSurahList(){
-  const sel = document.getElementById('surah-select');
-  try{
-    const res = await fetch('https://equran.id/api/v2/surat');
-    const json = await res.json();
-    const list = json.data || [];
-    sel.innerHTML = list.map(s=>`<option value="${s.nomor}">${s.nomor}. ${s.namaLatin} (${s.arti})</option>`).join('');
+function loadSurahList(){
+  var sel = document.getElementById('surah-select');
+  fetch('https://equran.id/api/v2/surat').then(function(res){ return res.json(); }).then(function(json){
+    var list = json.data || [];
+    sel.innerHTML = list.map(function(s){ return '<option value="'+s.nomor+'">'+s.nomor+'. '+s.namaLatin+' ('+s.arti+')</option>'; }).join('');
     if(list.length) loadSurahDetail(list[0].nomor);
-  }catch(err){
+  }).catch(function(){
     sel.innerHTML = '<option>Gagal memuat daftar (cek koneksi)</option>';
-  }
+  });
 }
-async function loadSurahDetail(nomor){
-  const box = document.getElementById('ayat-list');
+function loadSurahDetail(nomor){
+  var box = document.getElementById('ayat-list');
   box.textContent = 'Memuat ayat...';
-  try{
-    const res = await fetch('https://equran.id/api/v2/surat/'+nomor);
-    const json = await res.json();
-    const ayatArr = (json.data && json.data.ayat) || [];
-    box.innerHTML = ayatArr.slice(0,15).map(a=>`
-      <div class="ayat-item">
-        <div class="ayat-arab">${a.teksArab||''}</div>
-        <div class="ayat-id"><strong>${a.nomorAyat}.</strong> ${a.teksIndonesia||''}</div>
-      </div>
-    `).join('') || 'Data ayat tidak tersedia untuk surah ini.';
-  }catch(err){
+  fetch('https://equran.id/api/v2/surat/'+nomor).then(function(res){ return res.json(); }).then(function(json){
+    var ayatArr = (json.data && json.data.ayat) || [];
+    box.innerHTML = ayatArr.slice(0,15).map(function(a){
+      return '<div class="ayat-item"><div class="ayat-num">'+a.nomorAyat+'</div><div class="ayat-body"><div class="ayat-arab">'+(a.teksArab||'')+'</div><div class="ayat-id">'+(a.teksIndonesia||'')+'</div></div></div>';
+    }).join('') || 'Data ayat tidak tersedia untuk surah ini.';
+  }).catch(function(){
     box.textContent = 'Gagal memuat ayat (cek koneksi / struktur API).';
-  }
+  });
 }
-document.getElementById('surah-select').addEventListener('change', (e)=> loadSurahDetail(e.target.value));
+document.getElementById('surah-select').addEventListener('change', function(e){ loadSurahDetail(e.target.value); });
 loadSurahList();
 </script>
 </body>
