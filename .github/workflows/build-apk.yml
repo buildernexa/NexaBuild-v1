@@ -20,8 +20,16 @@ jobs:
 
       - name: Pastikan paket Android SDK yang dibutuhkan tersedia
         run: |
-          yes | sdkmanager --licenses > /dev/null 2>&1 || true
-          sdkmanager "platform-tools" "platforms;android-34" "build-tools;34.0.0"
+          echo "ANDROID_HOME = $ANDROID_HOME"
+          SDKMANAGER=$(find "$ANDROID_HOME" -maxdepth 4 -name sdkmanager -type f | head -n1)
+          if [ -z "$SDKMANAGER" ]; then
+            echo "sdkmanager tidak ditemukan di $ANDROID_HOME"
+            find "$ANDROID_HOME" -maxdepth 2
+            exit 1
+          fi
+          echo "Pakai sdkmanager di: $SDKMANAGER"
+          yes | "$SDKMANAGER" --licenses > /dev/null 2>&1 || true
+          "$SDKMANAGER" "platform-tools" "platforms;android-34" "build-tools;34.0.0"
 
       - name: Install dependensi Capacitor
         working-directory: apk-wrapper
